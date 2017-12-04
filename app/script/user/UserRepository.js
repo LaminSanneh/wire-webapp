@@ -117,8 +117,8 @@ z.user.UserRepository = class UserRepository {
       case z.event.Backend.USER.UPDATE:
         this.user_update(event_json);
         break;
-      case z.even.Client.USER.STATUS:
-        this.onUserStatus(event_json);
+      case z.even.Client.USER.AVAILABILITY:
+        this.onUserAvailability(event_json);
         break;
       default:
     }
@@ -131,7 +131,7 @@ z.user.UserRepository = class UserRepository {
         .then(users => {
           if (users.length) {
             return Promise.all(
-              users.map(user => this.get_user_by_id(user.id).then(userEt => userEt.status(user.status)))
+              users.map(user => this.get_user_by_id(user.id).then(userEt => userEt.availability(user.availability)))
             );
           }
         })
@@ -196,14 +196,14 @@ z.user.UserRepository = class UserRepository {
   }
 
   /**
-   * Event to update status of user.
+   * Event to update availability of user.
    * @param {Object} event - Event data
    * @returns {undefined} No return value
    */
-  onUserStatus(event) {
+  onUserAvailability(event) {
     if (this.is_team()) {
-      const {from: userId, data: {status}} = event;
-      this.get_user_by_id(userId).then(userEt => userEt.status(status));
+      const {from: userId, data: {availability}} = event;
+      this.get_user_by_id(userId).then(userEt => userEt.availability(availability));
     }
   }
 
@@ -564,44 +564,42 @@ z.user.UserRepository = class UserRepository {
     });
   }
 
-  changeStatus(status) {
-    if (status !== this.self().status()) {
-      this.self().status(status);
+  changeAvailability(availability) {
+    if (availability !== this.self().availability()) {
+      this.self().status(availability);
 
-      const updatedStatus = (() => {
-        switch (status) {
-          case z.user.StatusType.NONE:
-            return z.proto.AvailabilityStatus.Type.NONE;
-          case z.user.StatusType.AVAILABLE:
-            return z.proto.AvailabilityStatus.Type.AVAILABLE;
-          case z.user.StatusType.AWAY:
-            return z.proto.AvailabilityStatus.Type.AWAY;
-          case z.user.StatusType.BUSY:
-            return z.proto.AvailabilityStatus.Type.BUSY;
-          case z.user.StatusType.CUSTOM:
-            return z.proto.AvailabilityStatus.Type.CUSTOM;
+      const updatedAvailbility = (() => {
+        switch (availability) {
+          case z.user.AvailabilityType.AVAILABLE:
+            return z.proto.Availability.Type.AVAILABLE;
+          case z.user.AvailabilityType.AWAY:
+            return z.proto.Availability.Type.AWAY;
+          case z.user.AvailabilityType.BUSY:
+            return z.proto.Availability.Type.BUSY;
+          case z.user.AvailabilityType.NONE:
+            return z.proto.Availability.Type.NONE;
           default:
         }
       })();
 
       const genericMessage = new z.proto.GenericMessage(z.util.create_random_uuid());
-      const activityStatus = new z.proto.AvailabilityStatus(updatedStatus);
-      genericMessage.set(z.cryptography.GENERIC_MESSAGE_TYPE.STATUS, activityStatus);
+      const availabilityMessage = new z.proto.Availability(updatedAvailbility);
+      genericMessage.set(z.cryptography.GENERIC_MESSAGE_TYPE.AVAILABILITY, availabilityMessage);
 
       amplify.publish(z.event.WebApp.BROADCAST.SEND_MESSAGE, genericMessage);
-      this._trackStatus(status);
+      this._trackAvailability(availability);
     }
   }
 
   /**
-   * Track status action.
+   * Track availability action.
    *
-   * @param {z.user.StatusType} activityStatus - Type of status
+   * @param {z.user.AvailabilityType} availability - Type of availability
    * @returns {undefined} No return value
    */
-  _trackStatus(activityStatus) {
+  _trackAvailability(availability) {
     amplify.publish(z.event.WebApp.ANALYTICS.EVENT, z.tracking.EventName.CONVERSATION.REACTED_TO_MESSAGE, {
-      action: activityStatus === z.user.StatusType.NONE ? 'set' : 'unset',
+      action: availability === z.user.AvailabilityType.NONE ? 'set' : 'unset',
     });
   }
 

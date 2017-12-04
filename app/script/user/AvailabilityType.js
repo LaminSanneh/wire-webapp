@@ -23,13 +23,12 @@ window.z = window.z || {};
 window.z.user = z.user || {};
 
 /**
- * Enum for different user status types.
- * @type {z.user.StatusType} Enum of status types
+ * Enum for different user availability types.
+ * @type {z.user.AvailabilityType} Enum of availability types
  */
-z.user.StatusType = {
+z.user.AvailabilityType = {
   AVAILABLE: 1,
   AWAY: 2,
   BUSY: 3,
-  CUSTOM: 4,
   NONE: 0,
 };

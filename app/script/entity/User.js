@@ -164,11 +164,11 @@ z.entity.User = class User {
       return this.devices().every(client_et => client_et.meta.is_verified());
     });
 
-    this.status = ko.observable(z.user.StatusType.NONE);
+    this.availability = ko.observable(z.user.AvailabilityType.NONE);
   }
 
   subscribeToChanges() {
-    this.status.subscribe(() => amplify.publish(z.event.WebApp.USER.PERSIST, this));
+    this.availability.subscribe(() => amplify.publish(z.event.WebApp.USER.PERSIST, this));
   }
 
   add_client(new_client_et) {
@@ -206,8 +206,8 @@ z.entity.User = class User {
 
   serialize() {
     return {
+      availability: this.availability(),
       id: this.id,
-      status: this.status(),
     };
   }
 };

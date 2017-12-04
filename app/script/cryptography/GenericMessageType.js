@@ -24,6 +24,7 @@ window.z.cryptography = z.cryptography || {};
 
 z.cryptography.GENERIC_MESSAGE_TYPE = {
   ASSET: 'asset',
+  AVAILABILITY: 'availability',
   CALLING: 'calling',
   CLEARED: 'cleared',
   CLIENT_ACTION: 'clientAction',
@@ -37,6 +38,5 @@ z.cryptography.GENERIC_MESSAGE_TYPE = {
   LAST_READ: 'lastRead',
   LOCATION: 'location',
   REACTION: 'reaction',
-  STATUS: 'activityStatus',
   TEXT: 'text',
 };
