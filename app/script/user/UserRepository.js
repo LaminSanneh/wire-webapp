@@ -566,7 +566,7 @@ z.user.UserRepository = class UserRepository {
 
   changeAvailability(availability) {
     if (availability !== this.self().availability()) {
-      this.self().status(availability);
+      this.self().availability(availability);
 
       const updatedAvailbility = (() => {
         switch (availability) {
