@@ -27,10 +27,9 @@ window.z.user = z.user || {};
  * @type {z.user.StatusType} Enum of status types
  */
 z.user.StatusType = {
-  BREAK: 1,
+  AVAILABLE: 1,
+  AWAY: 2,
+  BUSY: 3,
+  CUSTOM: 4,
   NONE: 0,
-  REMOTE: 2,
-  SICK: 3,
-  UNAVAILABLE: 4,
-  VACATION: 5,
 };

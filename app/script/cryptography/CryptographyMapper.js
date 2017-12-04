@@ -354,18 +354,16 @@ z.cryptography.CryptographyMapper = class CryptographyMapper {
       data: {
         status: (() => {
           switch (status.type) {
-            case z.proto.ActivityStatus.Type.NONE:
+            case z.proto.AvailabilityStatus.Type.NONE:
               return z.user.StatusType.NONE;
-            case z.proto.ActivityStatus.Type.BREAK:
-              return z.user.StatusType.BREAK;
-            case z.proto.ActivityStatus.Type.REMOTE:
-              return z.user.StatusType.REMOTE;
-            case z.proto.ActivityStatus.Type.SICK:
-              return z.user.StatusType.SICK;
-            case z.proto.ActivityStatus.Type.VACATION:
-              return z.user.StatusType.VACATION;
-            case z.proto.ActivityStatus.Type.UNAVAILABLE:
-              return z.user.StatusType.UNAVAILABLE;
+            case z.proto.AvailabilityStatus.Type.AVAILABLE:
+              return z.user.StatusType.AVAILABLE;
+            case z.proto.AvailabilityStatus.Type.AWAY:
+              return z.user.StatusType.AWAY;
+            case z.proto.AvailabilityStatus.Type.BUSY:
+              return z.user.StatusType.BUSY;
+            case z.proto.AvailabilityStatus.Type.CUSTOM:
+              return z.user.StatusType.CUSTOM;
             default:
               throw new z.cryptography.CryptographyError(
                 z.cryptography.CryptographyError.TYPE.UNHANDLED_TYPE,

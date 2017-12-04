@@ -571,23 +571,21 @@ z.user.UserRepository = class UserRepository {
       const updatedStatus = (() => {
         switch (status) {
           case z.user.StatusType.NONE:
-            return z.proto.ActivityStatus.Type.NONE;
-          case z.user.StatusType.BREAK:
-            return z.proto.ActivityStatus.Type.BREAK;
-          case z.user.StatusType.REMOTE:
-            return z.proto.ActivityStatus.Type.REMOTE;
-          case z.user.StatusType.SICK:
-            return z.proto.ActivityStatus.Type.SICK;
-          case z.user.StatusType.VACATION:
-            return z.proto.ActivityStatus.Type.VACATION;
-          case z.user.StatusType.UNAVAILABLE:
-            return z.proto.ActivityStatus.Type.UNAVAILABLE;
+            return z.proto.AvailabilityStatus.Type.NONE;
+          case z.user.StatusType.AVAILABLE:
+            return z.proto.AvailabilityStatus.Type.AVAILABLE;
+          case z.user.StatusType.AWAY:
+            return z.proto.AvailabilityStatus.Type.AWAY;
+          case z.user.StatusType.BUSY:
+            return z.proto.AvailabilityStatus.Type.BUSY;
+          case z.user.StatusType.CUSTOM:
+            return z.proto.AvailabilityStatus.Type.CUSTOM;
           default:
         }
       })();
 
       const genericMessage = new z.proto.GenericMessage(z.util.create_random_uuid());
-      const activityStatus = new z.proto.ActivityStatus(updatedStatus);
+      const activityStatus = new z.proto.AvailabilityStatus(updatedStatus);
       genericMessage.set(z.cryptography.GENERIC_MESSAGE_TYPE.STATUS, activityStatus);
 
       amplify.publish(z.event.WebApp.BROADCAST.SEND_MESSAGE, genericMessage);
