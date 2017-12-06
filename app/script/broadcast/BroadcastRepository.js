@@ -41,11 +41,7 @@ z.broadcast.BroadcastRepository = class BroadcastRepository {
     this.userRepository = userRepository;
     this.logger = new z.util.Logger('z.broadcast.BroadcastRepository', z.config.LOGGER.OPTIONS);
 
-    amplify.subscribe(z.event.WebApp.BROADCAST.SEND_MESSAGE, this.sendMessage.bind(this));
-  }
-
-  sendMessage(genericMessage) {
-    return this.broadcastGenericMessage(genericMessage);
+    amplify.subscribe(z.event.WebApp.BROADCAST.SEND_MESSAGE, this.broadcastGenericMessage.bind(this));
   }
 
   /**
